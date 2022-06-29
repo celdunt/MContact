@@ -76,6 +76,8 @@ public class NewContactActivity extends AppCompatActivity {
             MainActivity.contactArrayList.add(contact);
 
             MainActivity.adapterAsList.add(contact.fullname);
+
+            MainActivity.adapter.clear();
             MainActivity.adapter.addAll(MainActivity.adapterAsList);
         }
         if (MainActivity.openProperty == MainActivity.EXIST_ACC) {
