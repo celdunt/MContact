@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MContact"
         tools:targetApi="31">
         <activity
-            android:name=".NewContactActivity"
+            android:name=".ContactActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
