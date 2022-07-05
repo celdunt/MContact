@@ -6,9 +6,6 @@
  Имеется проверка ввода номера телефона;
  Можно не только добавлять, но и изменять контакты;
 
-## Скриншоты
- ![1](https://github.com/celdunt/MContact/blob/main/screens/1.png)
- ![2](https://github.com/celdunt/MContact/blob/main/screens/2.png)
- ![3](https://github.com/celdunt/MContact/blob/main/screens/3.png)
- ![4](https://github.com/celdunt/MContact/blob/main/screens/4.png)
- ![5](https://github.com/celdunt/MContact/blob/main/screens/5.png)
+## Видео-демонстрация
+https://user-images.githubusercontent.com/107755206/177422755-bdfe4ea3-5b43-4756-92cc-fccc4fb65429.mp4
+
