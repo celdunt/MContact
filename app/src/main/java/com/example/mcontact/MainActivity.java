@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,11 +16,19 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ListView contactList;
+    EditText searchField;
 
     public static ArrayList<Contact> contactArrayList;
+    public static ArrayList<Contact> copyContactArrayList;
+    public ArrayList<Contact> tempContactsList = new ArrayList<>();
+
+
+
     public static int selectedContact = -1;
 
     public static DatabaseController dbController;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +47,51 @@ public class MainActivity extends AppCompatActivity {
             selectContactActivity(null);
         });
 
-        dbController.testDB("contacts");
+
+
+        searchField = findViewById(R.id.searchField);
+        searchFunction();
+
         loadValuesFromDatabaseTable("contacts");
+    }
+
+    public void searchFunction() {
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (searchField.getText().toString().equals("")) {
+                    contactList.setAdapter(ContactAdapter.contactDemonstrationAdapter);
+                    contactArrayList = (ArrayList<Contact>) copyContactArrayList.clone();
+                }
+                else {
+                    contactList.setAdapter(ContactAdapter.demonstrationFoundContactsAdapter);
+
+                    tempContactsList.clear();
+                    ContactAdapter.demonstrationFoundContactsList.clear();
+
+                    tempContactsList = (ArrayList<Contact>) contactArrayList.clone();
+                    contactArrayList = contactArrayList.stream()
+                            .filter(contact -> contact.getFullname().contains(searchField.getText().toString()) ||
+                                    contact.getPhoneNumber().contains(searchField.getText().toString()))
+                            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+
+                    for (Contact c : contactArrayList)
+                        ContactAdapter.demonstrationFoundContactsList.add(c.getFullname());
+
+                    ContactAdapter.demonstrationFoundContactsAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     public void selectContactActivity(View view) {
@@ -70,5 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 query.moveToNext();
             }
         }
+
+        copyContactArrayList = (ArrayList<Contact>) contactArrayList.clone();
     }
 }

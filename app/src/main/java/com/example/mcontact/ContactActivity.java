@@ -1,8 +1,12 @@
 package com.example.mcontact;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,10 +19,12 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ContactActivity extends AppCompatActivity {
 
     private final int SELECT_IMAGE = 1234;
+    private final int PERMISSION_REQUEST_CALL_PHONE = 1235;
 
     private Contact openedContact;
     EditText nameC;
@@ -41,11 +47,13 @@ public class ContactActivity extends AppCompatActivity {
 
         Button acceptButton = findViewById(R.id.acceptButton);
         Button delButton = findViewById(R.id.deleteButton);
+        Button dialButton = findViewById(R.id.dialButton);
 
         if (MainActivity.selectedContact != -1) {
             openedContact = MainActivity.contactArrayList.get(MainActivity.selectedContact);
             acceptButton.setText("Изменить");
             delButton.setVisibility(View.VISIBLE);
+            dialButton.setVisibility(View.VISIBLE);
 
             nameC.setText(openedContact.getName());
             middleNameC.setText(openedContact.getMidname());
@@ -123,6 +131,8 @@ public class ContactActivity extends AppCompatActivity {
             );
         }
 
+        MainActivity.copyContactArrayList = (ArrayList<Contact>) MainActivity.contactArrayList.clone();
+
         ContactAdapter.contactDemonstrationAdapter.notifyDataSetChanged();
 
         this.finish();
@@ -150,6 +160,15 @@ public class ContactActivity extends AppCompatActivity {
         this.finish();
     }
 
+    public void toDial(View view) {
+        String dial = "tel:"+openedContact.getPhoneNumber();
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE)
+        != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_REQUEST_CALL_PHONE);
+        } else startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + openedContact.getPhoneNumber())));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -166,6 +185,23 @@ public class ContactActivity extends AppCompatActivity {
 
                     imageC.setImageBitmap(tempBitmap);
                 }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CALL_PHONE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + openedContact.getPhoneNumber())));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Разрешение не получено!", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
         }
     }
 }
