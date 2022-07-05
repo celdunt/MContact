@@ -15,9 +15,9 @@ public class ContactAdapter {
 
     public static void initialize(MainActivity mainActivity) {
         contactDemonstrationAdapter =
-                new ArrayAdapter<>(mainActivity, android.R.layout.simple_list_item_1, contactDemonstrationList);
+                new ArrayAdapter<>(mainActivity, R.layout.list_white_text, contactDemonstrationList);
 
         demonstrationFoundContactsAdapter =
-                new ArrayAdapter<>(mainActivity, android.R.layout.simple_list_item_1, demonstrationFoundContactsList);
+                new ArrayAdapter<>(mainActivity, R.layout.list_white_text, demonstrationFoundContactsList);
     }
 }

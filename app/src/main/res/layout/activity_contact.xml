@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactActivity">
+    tools:context=".ContactActivity"
+    android:background="@color/cardview_dark_background">
 
     <ImageButton
         android:id="@+id/imageContactButton"
         android:layout_width="140dp"
         android:layout_height="213dp"
         android:contentDescription="addPhoto"
+        android:onClick="onSelectPhoto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        android:onClick="onSelectPhoto" />
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <EditText
         android:id="@+id/middlenameContact"
@@ -33,7 +34,9 @@
         app:layout_constraintHorizontal_bias="0.875"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.023"
+        android:textColor="@color/white"
+        android:textColorHint="@color/teal_200"/>
 
     <EditText
         android:id="@+id/firstnameContact"
@@ -48,7 +51,9 @@
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintVertical_bias="0.108"
+        android:textColor="@color/white"
+        android:textColorHint="@color/teal_200"/>
 
     <EditText
         android:id="@+id/surnameContact"
@@ -63,7 +68,9 @@
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.178" />
+        app:layout_constraintVertical_bias="0.178"
+        android:textColor="@color/white"
+        android:textColorHint="@color/teal_200"/>
 
     <EditText
         android:id="@+id/phonenumberContact"
@@ -78,7 +85,9 @@
         app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.248" />
+        app:layout_constraintVertical_bias="0.248"
+        android:textColor="@color/white"
+        android:textColorHint="@color/teal_200"/>
 
     <Button
         android:id="@+id/acceptButton"
@@ -91,7 +100,9 @@
         app:layout_constraintHorizontal_bias="0.918"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.976"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/deleteButton"
@@ -105,17 +116,21 @@
         app:layout_constraintHorizontal_bias="0.918"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888" />
+        app:layout_constraintVertical_bias="0.888"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
         android:onClick="onBack"
         android:text="Назад"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
@@ -124,13 +139,15 @@
         android:id="@+id/dialButton"
         android:layout_width="140dp"
         android:layout_height="47dp"
+        android:backgroundTint="@color/white"
         android:onClick="toDial"
         android:text="Звонок"
+        android:textColor="@color/black"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.393" />
+        app:layout_constraintTop_toBottomOf="@+id/imageContactButton"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
