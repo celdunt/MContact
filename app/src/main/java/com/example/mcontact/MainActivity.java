@@ -90,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
                     tempContactsList.clear();
                     ContactAdapter.demonstrationFoundContactsList.clear();
 
-                    tempContactsList = (ArrayList<Contact>) contactArrayList.clone();
-                    contactArrayList = contactArrayList.stream()
+                    tempContactsList = (ArrayList<Contact>) copyContactArrayList.clone();
+                    contactArrayList = copyContactArrayList.stream()
                             .filter(contact -> contact.getFullname().contains(searchField.getText().toString()) ||
                                     contact.getPhoneNumber().contains(searchField.getText().toString()))
                             .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
