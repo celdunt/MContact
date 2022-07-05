@@ -40,18 +40,24 @@ public class ContactActivity extends AppCompatActivity {
         imageC = findViewById(R.id.imageContactButton);
 
         Button acceptButton = findViewById(R.id.acceptButton);
+        Button delButton = findViewById(R.id.deleteButton);
 
         if (MainActivity.selectedContact != -1) {
             openedContact = MainActivity.contactArrayList.get(MainActivity.selectedContact);
             acceptButton.setText("Изменить");
+            delButton.setVisibility(View.VISIBLE);
 
             nameC.setText(openedContact.getName());
             middleNameC.setText(openedContact.getMidname());
             surnameC.setText(openedContact.getSurname());
             phoneNumberC.setText(openedContact.getPhoneNumber());
-            imageC.setImageBitmap(openedContact.getImageContact());
+            if (openedContact.getImageContact() != null) {
+                imageC.setImageBitmap(openedContact.getImageContact());
+                tempBitmap = openedContact.getImageContact();
+            }
 
-            tempBitmap = openedContact.getImageContact();
+            System.out.println(openedContact.getID());
+            System.out.println(MainActivity.dbController.getLastIndex("contacts"));
         }
     }
 
@@ -69,7 +75,10 @@ public class ContactActivity extends AppCompatActivity {
             return;
         }
 
+        int contactID = MainActivity.selectedContact == -1? MainActivity.dbController.getLastIndex("contacts") + 1 : openedContact.getID();
+
         Contact contact = new Contact(
+                contactID,
                 tempBitmap,
                 middleNameC.getText().toString(),
                 nameC.getText().toString(),
@@ -81,10 +90,37 @@ public class ContactActivity extends AppCompatActivity {
             MainActivity.contactArrayList.add(contact);
 
             ContactAdapter.contactDemonstrationList.add(contact.getFullname());
+
+            MainActivity.dbController.addValuesToTable(
+                    "contacts",
+                    new String[] {"name", "midname", "surname", "phone"},
+                    new String[] {contact.getName(), contact.getMidname(), contact.getSurname(), contact.getPhoneNumber()}
+            );
+            MainActivity.dbController.insertImageToTable(
+                    "contacts",
+                    MainActivity.dbController.getLastIndex("contacts"),
+                    "photo",
+                    contact.getImageContact()
+            );
         } else {
             MainActivity.contactArrayList.set(MainActivity.selectedContact, contact);
 
             ContactAdapter.contactDemonstrationList.set(MainActivity.selectedContact, contact.getFullname());
+
+            MainActivity.dbController.updateValueInTable("contacts", "name",
+                    contact.getID(), contact.getName());
+            MainActivity.dbController.updateValueInTable("contacts", "midname",
+                    contact.getID(), contact.getMidname());
+            MainActivity.dbController.updateValueInTable("contacts", "surname",
+                    contact.getID(), contact.getSurname());
+            MainActivity.dbController.updateValueInTable("contacts", "phone",
+                    contact.getID(), contact.getPhoneNumber());
+            MainActivity.dbController.insertImageToTable(
+                    "contacts",
+                    contact.getID(),
+                    "photo",
+                    contact.getImageContact()
+            );
         }
 
         ContactAdapter.contactDemonstrationAdapter.notifyDataSetChanged();
@@ -94,7 +130,23 @@ public class ContactActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Успех!", Toast.LENGTH_SHORT).show();
     }
 
+    public void onDelete(View view) {
+        MainActivity.dbController.deleteFromTable("contacts", openedContact.getID());
+        ContactAdapter.contactDemonstrationList.remove(MainActivity.selectedContact);
+        MainActivity.contactArrayList.remove(MainActivity.selectedContact);
+
+        ContactAdapter.contactDemonstrationAdapter.notifyDataSetChanged();
+
+        MainActivity.selectedContact = -1;
+
+        this.finish();
+
+        Toast.makeText(getApplicationContext(), "Успех!", Toast.LENGTH_SHORT).show();
+    }
+
     public void onBack(View view) {
+        MainActivity.selectedContact = -1;
+
         this.finish();
     }
 

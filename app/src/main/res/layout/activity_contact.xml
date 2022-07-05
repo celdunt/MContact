@@ -94,6 +94,20 @@
         app:layout_constraintVertical_bias="0.976" />
 
     <Button
+        android:id="@+id/deleteButton"
+        android:visibility="invisible"
+        android:layout_width="117dp"
+        android:layout_height="49dp"
+        android:text="Удалить"
+        android:onClick="onDelete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.918"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.888" />
+
+    <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
