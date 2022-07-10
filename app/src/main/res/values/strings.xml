@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MContact</string>
+    <string name="open_go">Открыть</string>
+    <string name="open_back">Закрыть</string>
 </resources>

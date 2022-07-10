@@ -1,10 +1,16 @@
 package com.example.mcontact;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
-public class Contact {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+
+public class Contact implements Serializable {
+
     private int identifier;
-    private Bitmap imageContact;
+    byte[] imageByte;
     private String fullname;
     private String midname;
     private String name;
@@ -13,21 +19,12 @@ public class Contact {
 
     public Contact(int ID, Bitmap imageContact, String midname, String name, String surname, String phoneNumber) {
         identifier = ID;
-        this.imageContact = imageContact;
         this.midname = midname;
         this.name = name;
         this.surname = surname;
         fullname = midname + " " + name + " " + surname;
         this.phoneNumber = phoneNumber;
-    }
-
-    public Contact(Bitmap imageContact, String midname, String name, String surname, String phoneNumber) {
-        this.imageContact = imageContact;
-        this.midname = midname;
-        this.name = name;
-        this.surname = surname;
-        fullname = midname + " " + name + " " + surname;
-        this.phoneNumber = phoneNumber;
+        imageByte = DatabaseController.imageToBlob(imageContact);
     }
 
     public Contact(int ID) {
@@ -35,11 +32,11 @@ public class Contact {
     }
 
     public Bitmap getImageContact() {
-        return imageContact;
+        return DatabaseController.getImageValueFromBlob(imageByte);
     }
 
     public void setImageContact(Bitmap imageContact) {
-        this.imageContact = imageContact;
+        imageByte = DatabaseController.imageToBlob(imageContact);
     }
 
     public String getFullname() {

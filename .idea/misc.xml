@@ -6,9 +6,11 @@
         <entry key="..\:/AndroidStudioSDK's/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.1" />
         <entry key="..\:/MContact/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/MContact/app/src/main/res/layout/activity_new_contact.xml" value="0.25" />
+        <entry key="..\:/mcontact2/app/src/main/res/layout/activity_choose_directory.xml" value="0.152" />
         <entry key="..\:/mcontact2/app/src/main/res/layout/activity_contact.xml" value="0.264" />
-        <entry key="..\:/mcontact2/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/mcontact2/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/mcontact2/app/src/main/res/layout/list_white_text.xml" value="0.1" />
+        <entry key="..\:/mcontact2/app/src/main/res/layout/open_dir.xml" value="0.1175925925925926" />
       </map>
     </option>
   </component>

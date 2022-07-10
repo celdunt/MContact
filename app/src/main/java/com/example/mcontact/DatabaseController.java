@@ -22,6 +22,8 @@ public class DatabaseController {
                 new String[]{"INTEGER PRIMARY KEY NOT NULL", "TEXT", "TEXT", "TEXT", "TEXT", "BLOB"});
     }
 
+    public DatabaseController() {}
+
     private void createTable(String tableName, String[] fieldName, String[] fieldType) {
         if (fieldName.length != fieldType.length) return;
 
@@ -91,12 +93,12 @@ public class DatabaseController {
         return query;
     }
 
-    public Bitmap getImageValueFromBlob(byte[] blob) {
+    public static Bitmap getImageValueFromBlob(byte[] blob) {
         return BitmapFactory.decodeByteArray(blob, 0, blob.length);
     }
 
 
-    public byte[] imageToBlob(Bitmap image) {
+    public static byte[] imageToBlob(Bitmap image) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
 

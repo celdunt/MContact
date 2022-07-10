@@ -2,8 +2,10 @@ package com.example.mcontact;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,10 +16,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int WRITE_REQUEST_CODE = 0;
+    private static final int READ_REQUEST_CODE = 1;
+
 
     ListView contactList;
     EditText searchField;
@@ -98,6 +108,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void uploadValuesToDatabaseTable(String tableName) {
+        dbController.deleteTable(tableName);
+        dbController = new DatabaseController(getBaseContext().openOrCreateDatabase("contact.db", MODE_PRIVATE, null));
+
+        for (Contact c : contactArrayList) {
+            MainActivity.dbController.addValuesToTable(
+                    "contacts",
+                    new String[] {"name", "midname", "surname", "phone"},
+                    new String[] {c.getName(), c.getMidname(), c.getSurname(), c.getPhoneNumber()}
+            );
+            MainActivity.dbController.insertImageToTable(
+                    "contacts",
+                    MainActivity.dbController.getLastIndex("contacts"),
+                    "photo",
+                    c.getImageContact()
+            );
+        }
+    }
+
     private void loadValuesFromDatabaseTable(String tableName) {
         Cursor query = dbController.getValuesFromTable(tableName);
 
@@ -113,9 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 else contact.setImageContact(null);
                 contact.setFullname(contact.getMidname() + " " + contact.getName() + " " + contact.getSurname());
 
-                System.out.println(contact.getID());
-                System.out.println(query.getString(0));
-
                 contactArrayList.add(contact);
 
                 query.moveToNext();
@@ -123,5 +149,64 @@ public class MainActivity extends AppCompatActivity {
         }
 
         copyContactArrayList = (ArrayList<Contact>) contactArrayList.clone();
+    }
+
+
+    public void onExport(View view) {
+        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        requestPermissions(permissions, WRITE_REQUEST_CODE);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case WRITE_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    OpenFileDialog fileDialog = new OpenFileDialog(this)
+                            .setOnlyFoldersFilter()
+                            .setOpenDialogListener(fileName -> {
+                                try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName + "/contact.dat"))) {
+                                    oos.writeObject(contactArrayList);
+
+                                    System.out.println(fileName + "contact.dat");
+
+                                    Toast.makeText(getApplicationContext(), "Экспорт успешен!", Toast.LENGTH_SHORT).show();
+                                } catch (Exception ex) {
+                                    System.out.println(ex.getMessage());
+                                }
+                            });
+                    fileDialog.show();
+                } else {
+                }
+                break;
+            case READ_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    OpenFileDialog fileDialog = new OpenFileDialog(this)
+                            .setFilter(".*\\.dat")
+                            .setOpenDialogListener(fileName -> {
+                                try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+                                    contactArrayList.clear();
+                                    ArrayList<Contact> contacts = (ArrayList<Contact>) ois.readObject();
+                                    contactArrayList.addAll(contacts);
+
+                                    uploadValuesToDatabaseTable("contacts");
+
+                                    contactAdapter.notifyDataSetChanged();
+
+                                    Toast.makeText(getApplicationContext(), "Импорт успешен!", Toast.LENGTH_SHORT).show();
+                                } catch (Exception ex) {
+                                    System.out.println(ex.getMessage());
+                                    System.out.println(fileName);
+                                }
+                            });
+                    fileDialog.show();
+                } else {
+                }
+                break;
+        }
+    }
+    public void onImport(View view) {
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+        requestPermissions(permissions, READ_REQUEST_CODE);
     }
 }

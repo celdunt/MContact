@@ -2,48 +2,82 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    android:background="@color/cardview_dark_background"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@color/cardview_dark_background">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/listContactTextV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Список контактов"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022"
-        android:textColor="@color/white"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/listContactTextV"
+            android:layout_width="300dp"
+            android:paddingLeft="20dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Список контактов"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.061"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022" />
+
+        <Button
+            android:id="@+id/exportButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:onClick="onExport"
+            android:contentDescription="@string/bottom_sheet_behavior"
+            android:foreground="@android:drawable/ic_menu_save"
+            android:foregroundGravity="center"
+            android:backgroundTint="@color/cardview_dark_background"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/importButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:onClick="onImport"
+            android:contentDescription="@string/bottom_sheet_behavior"
+            android:foreground="@android:drawable/sym_contact_card"
+            android:foregroundGravity="center"
+            android:backgroundTint="@color/cardview_dark_background"
+            tools:ignore="TouchTargetSizeCheck" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/searchField"
         android:layout_width="387dp"
         android:layout_height="53dp"
-        android:ems="10"
         android:layout_gravity="center"
+        android:ems="10"
         android:hint="Поиск"
-        android:textAlignment="center"
         android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/teal_200"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085"
-        android:textColor="@color/white"
-        android:textColorHint="@color/teal_200"/>
+        app:layout_constraintVertical_bias="0.085" />
 
     <ListView
         android:id="@+id/contactList"
@@ -54,25 +88,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchField"
-        app:layout_constraintVertical_bias="0.514"
-        ></ListView>
+        app:layout_constraintVertical_bias="0.514"></ListView>
 
     <Button
         android:id="@+id/newContactButton"
         android:layout_width="wrap_content"
         android:layout_height="54dp"
         android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/white"
         android:onClick="selectContactActivity"
         android:text="Добавить контакт"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listContactTextV"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginTop="15dp"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/white"/>
+        app:layout_constraintVertical_bias="1.0" />
 
 </LinearLayout>
