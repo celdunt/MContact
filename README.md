@@ -38,4 +38,15 @@ https://user-images.githubusercontent.com/107755206/177496946-d96968f9-f865-4431
 
 
 
-https://user-images.githubusercontent.com/107755206/177497048-5c12798b-808b-4859-ac4f-522a8e7c8034.mp4
+https://user-images.githubusercontent.com/107755206/177497048-5c12798b-808b-4859-ac4f-522a8e7c8034.mp4  
+
+
+
+Экспорт/Импорт  
+
+
+
+
+https://user-images.githubusercontent.com/107755206/178146128-25b15eea-c592-4371-8ac9-b2d782f79cab.mp4
+
+
