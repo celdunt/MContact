@@ -115,13 +115,4 @@ public class DatabaseController {
 
         return -1;
     }
-
-    public void testDB(String tableName) {
-        String request = "SELECT * FROM " + tableName;
-        Cursor query = db.rawQuery(request, null);
-        if (query.moveToFirst()) {
-            System.out.println(query.getString(0));
-        }
-        System.out.println("ТЕСТ ТЕСТ ТЕСТ");
-    }
 }

@@ -83,4 +83,10 @@ public class Contact {
     }
 
     public int getID() {return identifier;}
+
+
+    @Override
+    public String toString() {
+        return getFullname();
+    }
 }

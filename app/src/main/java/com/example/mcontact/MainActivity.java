@@ -3,7 +3,6 @@ package com.example.mcontact;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -12,7 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewParent;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Contact> contactArrayList;
     public static ArrayList<Contact> copyContactArrayList;
-    public ArrayList<Contact> tempContactsList = new ArrayList<>();
+    public static ArrayAdapter<Contact> contactAdapter;
 
 
 
@@ -48,11 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
         dbController = new DatabaseController(getBaseContext().openOrCreateDatabase("contact.db", MODE_PRIVATE, null));
 
-        ContactAdapter.initialize(this);
 
         contactList = findViewById(R.id.contactList);
         contactArrayList = new ArrayList<>();
-        contactList.setAdapter(ContactAdapter.contactDemonstrationAdapter);
+        contactAdapter =
+                new ArrayAdapter<>(this, R.layout.list_white_text, contactArrayList);
+        contactList.setAdapter(contactAdapter);
         contactList.setOnItemClickListener((p, v, pos, id) -> {
             MainActivity.selectedContact = pos;
             selectContactActivity(null);
@@ -69,37 +69,25 @@ public class MainActivity extends AppCompatActivity {
     public void searchFunction() {
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2){}
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable editable) {
                 if (searchField.getText().toString().equals("")) {
-                    contactList.setAdapter(ContactAdapter.contactDemonstrationAdapter);
-                    contactArrayList = (ArrayList<Contact>) copyContactArrayList.clone();
+                    contactArrayList.clear();
+                    contactArrayList.addAll((ArrayList<Contact>)copyContactArrayList.clone());
+
+                    contactAdapter.notifyDataSetChanged();
                 }
                 else {
-                    contactList.setAdapter(ContactAdapter.demonstrationFoundContactsAdapter);
-
-                    tempContactsList.clear();
-                    ContactAdapter.demonstrationFoundContactsList.clear();
-
-                    tempContactsList = (ArrayList<Contact>) copyContactArrayList.clone();
-                    contactArrayList = copyContactArrayList.stream()
+                    contactArrayList.clear();
+                    contactArrayList.addAll(copyContactArrayList.stream()
                             .filter(contact -> contact.getFullname().contains(searchField.getText().toString()) ||
                                     contact.getPhoneNumber().contains(searchField.getText().toString()))
-                            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll));
 
-                    for (Contact c : contactArrayList)
-                        ContactAdapter.demonstrationFoundContactsList.add(c.getFullname());
-
-                    ContactAdapter.demonstrationFoundContactsAdapter.notifyDataSetChanged();
+                    contactAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -129,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(query.getString(0));
 
                 contactArrayList.add(contact);
-                ContactAdapter.contactDemonstrationList.add(contact.getFullname());
 
                 query.moveToNext();
             }

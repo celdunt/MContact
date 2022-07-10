@@ -104,8 +104,6 @@ public class ContactActivity extends AppCompatActivity {
         if (MainActivity.selectedContact == -1) {
             MainActivity.contactArrayList.add(contact);
 
-            ContactAdapter.contactDemonstrationList.add(contact.getFullname());
-
             MainActivity.dbController.addValuesToTable(
                     "contacts",
                     new String[] {"name", "midname", "surname", "phone"},
@@ -119,8 +117,6 @@ public class ContactActivity extends AppCompatActivity {
             );
         } else {
             MainActivity.contactArrayList.set(MainActivity.selectedContact, contact);
-
-            ContactAdapter.contactDemonstrationList.set(MainActivity.selectedContact, contact.getFullname());
 
             MainActivity.dbController.updateValueInTable("contacts", "name",
                     contact.getID(), contact.getName());
@@ -140,7 +136,7 @@ public class ContactActivity extends AppCompatActivity {
 
         MainActivity.copyContactArrayList = (ArrayList<Contact>) MainActivity.contactArrayList.clone();
 
-        ContactAdapter.contactDemonstrationAdapter.notifyDataSetChanged();
+        MainActivity.contactAdapter.notifyDataSetChanged();
 
         this.finish();
 
@@ -149,10 +145,9 @@ public class ContactActivity extends AppCompatActivity {
 
     public void onDelete(View view) {
         MainActivity.dbController.deleteFromTable("contacts", openedContact.getID());
-        ContactAdapter.contactDemonstrationList.remove(MainActivity.selectedContact);
         MainActivity.contactArrayList.remove(MainActivity.selectedContact);
 
-        ContactAdapter.contactDemonstrationAdapter.notifyDataSetChanged();
+        MainActivity.contactAdapter.notifyDataSetChanged();
 
         MainActivity.selectedContact = -1;
 
